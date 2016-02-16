@@ -5,5 +5,12 @@ def hw1(input, output):
     i = open(input, 'r')
     o = open(output, 'w')
     for line in i:
-        pangram(line)
-
+        result = pangram(line)
+        if result == True:
+            o.write('true\n')
+        else:
+            o.write('false\n')
+    i.close()
+    o.close()
+    
+hw1("input.txt","output.txt")
