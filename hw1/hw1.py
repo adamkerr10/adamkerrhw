@@ -13,4 +13,3 @@ def hw1(input, output):
     i.close()
     o.close()
     
-hw1("input.txt","output.txt")

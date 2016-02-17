@@ -9,4 +9,3 @@ fun hw1(inFile : string, outFile : string) =
 	in
 		helper(TextIO.input1 ins)
 	end
-val _ = hw1("C:/Users/Adam/Documents/GitHub/adamkerrhw/hw1/sample_input_1.txt", "C:/Users/Adam/Documents/GitHub/adamkerrhw/hw1/sample_output_1.txt");
