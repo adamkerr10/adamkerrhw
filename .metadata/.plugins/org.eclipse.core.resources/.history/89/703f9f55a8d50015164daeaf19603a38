@@ -1,0 +1,7 @@
+package hw1;
+
+public class hw1 {
+	public static void hw1(String inFile,String outFile){
+		
+	}
+}
