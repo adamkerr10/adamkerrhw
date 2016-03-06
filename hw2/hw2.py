@@ -13,7 +13,6 @@ def hw2(input, output):
                         num = line[5:]
                         if isInt(num) == True:
                                 newnum = num.strip('\n')
-                                print("pushing %s" % newnum)
                                 stack.append(newnum)
                         else:
                                 stack.append(":error:")
@@ -25,11 +24,13 @@ def hw2(input, output):
                                 stack.pop()
 
                 if "quit" in line:
-                        for x in stack:
-                                ou.write(x)
-                                inp.close()
-                                ou.close()
-                                return None
+                        print("outputting, stack is %s" % stack)
+                        for x in reversed(stack):
+                                nl = x + "\n"
+                                ou.write(nl)
+                        inp.close()
+                        ou.close()
+                        return None
                                 
                 if ":true:" in line:
                         stack.append(":true:")
@@ -58,8 +59,110 @@ def hw2(input, output):
                         else:
                                 stack.append(":error:")
 
+                if "sub" in line:
+                        size = len(stack)
+                        if size != 0 and size != 1:
+                                if isInt(stack[-1]) == True and isInt(stack[-2]) == True:
+                                        num1 = stack[-1]
+                                        stack.pop()
+                                        num2 = stack[-1]
+                                        stack.pop()
+                                        int1 = int(num1)
+                                        int2 = int(num2)
+                                        result = int2-int1
+                                        stringresult = str(result)
+                                        stack.append(stringresult)
+                                else:
+                                        stack.append(":error:")
+                        else:
+                                stack.append(":error:")
+
+                if "mul" in line:
+                        size = len(stack)
+                        if size != 0 and size != 1:
+                                if isInt(stack[-1]) == True and isInt(stack[-2]) == True:
+                                        num1 = stack[-1]
+                                        stack.pop()
+                                        num2 = stack[-1]
+                                        stack.pop()
+                                        int1 = int(num1)
+                                        int2 = int(num2)
+                                        result = int1*int2
+                                        stringresult = str(result)
+                                        stack.append(stringresult)
+                                else:
+                                        stack.append(":error:")
+                        else:
+                                stack.append(":error:")
+
+                if "div" in line:
+                        size = len(stack)
+                        if size != 0 and size != 1:
+                                if isInt(stack[-1]) == True and isInt(stack[-2]) == True:
+                                        num1 = stack[-1]
+                                        stack.pop()
+                                        num2 = stack[-1]
+                                        stack.pop()
+                                        int1 = int(num1)
+                                        int2 = int(num2)
+                                        result = int2//int1
+                                        stringresult = str(result)
+                                        stack.append(stringresult)
+                                else:
+                                        stack.append(":error:")
+                        else:
+                                stack.append(":error:")
+
+                if "rem" in line:
+                        size = len(stack)
+                        if size != 0 and size != 1:
+                                if isInt(stack[-1]) == True and isInt(stack[-2]) == True:
+                                        num1 = stack[-1]
+                                        stack.pop()
+                                        num2 = stack[-1]
+                                        stack.pop()
+                                        int1 = int(num1)
+                                        int2 = int(num2)
+                                        result = int2%int1
+                                        stringresult = str(result)
+                                        stack.append(stringresult)
+                                else:
+                                        stack.append(":error:")
+                        else:
+                                stack.append(":error:")
+
+                if "neg" in line:
+                        size = len(stack)
+                        if size != 0:
+                                if isInt(stack[-1]) == True:
+                                        num1 = stack[-1]
+                                        stack.pop()
+                                        int1 = int(num1)
+                                        result = -int1
+                                        stringresult = str(result)
+                                        stack.append(stringresult)
+                                else:
+                                        stack.append(":error:")
+                        else:
+                                stack.append(":error:")
+
+                if "swap" in line:
+                        size = len(stack)
+                        if size != 0 and size != 1:
+                                val1 = stack[-1]
+                                stack.pop()
+                                val2 = stack[-1]
+                                stack.pop()
+                                stack.append(val1)
+                                stack.append(val2)
+                        else:
+                                stack.append(":error:")
+                                
+
+                
+
 
 
         
 
-hw2("sample_input1.txt", "sample_output1.txt")
+
