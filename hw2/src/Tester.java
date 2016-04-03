@@ -8,8 +8,8 @@ public class Tester {
 		catch (Exception e) {
 			//should never throw
 		}
-			String input = "sample_input6.txt";
-			String output = "sample_output6.txt";
+			String input = "15divtest_input.txt";
+			String output = "15divtest_output.txt";
 			/* You can also read input and output as command line arguments – it doesn’t
 			matter as long as your input file is called input.txt and output file is output.txt */
 			hw2.hw2(input,output);

@@ -17,6 +17,8 @@ public class hw2 {
 		String line = null;
 		int intChecker = 0;
 		String numStore = "";
+		String numStore1 = "";
+		String numStore2 = "";
 		Stack<String> stack = new Stack<String>();
 		while ((line = bRead.readLine()) != null) {
 			if(line.contains("push")){
@@ -154,12 +156,14 @@ public class hw2 {
 					try{
 						Integer.parseInt(stack.peek());
 						String num1 = stack.pop();
+						numStore1 = num1;
 						intChecker = 1;
 						numStore = num1;
 						Integer.parseInt(stack.peek());
 						intChecker = 0;
 						numStore = "";
 						String num2 = stack.pop();
+						numStore2 = num2;
 						int int1 = Integer.parseInt(num1);
 						int int2 = Integer.parseInt(num2);
 						int result = int2/int1;
@@ -169,6 +173,10 @@ public class hw2 {
 						if(intChecker == 1 && numStore != ""){
 							stack.push(numStore);
 						}
+						stack.push(":error:");
+					} catch(ArithmeticException e){
+						stack.push(numStore1);
+						stack.push(numStore2);
 						stack.push(":error:");
 					}
 				}

@@ -24,8 +24,9 @@ def hw2(input, output):
                                 stack.pop()
 
                 if "quit" in line:
-                        print("outputting, stack is %s" % stack)
                         for x in reversed(stack):
+                                if x == "-0":
+                                        x = "0"
                                 nl = x + "\n"
                                 ou.write(nl)
                         inp.close()
@@ -98,7 +99,7 @@ def hw2(input, output):
                 if "div" in line:
                         size = len(stack)
                         if size != 0 and size != 1:
-                                if isInt(stack[-1]) == True and isInt(stack[-2]) == True:
+                                if isInt(stack[-1]) == True and isInt(stack[-2]) == True and (stack[-1]) != "0" and (stack[-1]) != "-0":
                                         num1 = stack[-1]
                                         stack.pop()
                                         num2 = stack[-1]
@@ -158,9 +159,6 @@ def hw2(input, output):
                         else:
                                 stack.append(":error:")
                                 
-
-                
-
 
 
         
