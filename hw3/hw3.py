@@ -2,34 +2,34 @@ def hw3(input, output):
         fInput = open(input,'r')
         f = open(output,'w')
         stack = []
+        map1 = {}
         for line in fInput:
                 if line[0].isalpha():
-                        parsePrimitive(line, stack, f)
+                        parsePrimitive(line, stack, f, map1)
                 elif line[0] == ':':
                         parseBooleanOrError(line, stack)
         fInput.close()
 
 
-
-def parsePrimitive(line, stack, f):
+def parsePrimitive(line, stack, f, map1):
         if line.startswith('add'):
-                doAdd(stack)
+                doAdd(stack, map1)
         elif line.startswith('sub'):
-                doSub(stack)
+                doSub(stack, map1)
         elif line.startswith('mul'):
-                doMul(stack)
+                doMul(stack, map1)
         elif line.startswith('div'):
-                doDiv(stack)
+                doDiv(stack, map1)
         elif line.startswith('rem'):
-                doRem(stack)
+                doRem(stack, map1)
         elif line.startswith('pop'):
-                doPop(stack)
+                doPop(stack, map1)
         elif line.startswith('push'):
                 doPush(stack, line)
         elif line.startswith('swap'):
-                doSwap(stack)
+                doSwap(stack, map1)
         elif line.startswith('neg'):
-                doNeg(stack)
+                doNeg(stack, map1)
         elif line.startswith('quit'):
                 doQuit(stack, f)
         elif line.startswith('and'):
@@ -43,13 +43,40 @@ def parsePrimitive(line, stack, f):
         elif line.startswith('lessThan'):
                 doLessThan(stack)
         elif line.startswith('bind'):
-                doBind(stack)
+                doBind(stack, map1)
+        elif line.startswith('if'):
+                doIf(stack)
 
-def doAdd(stack):
+def doAdd(stack, map1):
         if len(stack) < 2:
                 return stack.insert(0, ':error:')
         elif stack[0][0] == ':' or stack[1][0] == ':':
                 return stack.insert(0, ':error:')
+        elif stack[0] in map1 and stack[1] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x+y
+                return stack.insert(0, str(newTop))
+        elif stack[0] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                y = int(stack[0])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x+y
+                return stack.insert(0, str(newTop))
+        elif stack[1] in map1:
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                x = int(stack[1])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x+y
+                return stack.insert(0, str(newTop))
         else:
                 x = int(stack[1])
                 y = int(stack[0])
@@ -59,11 +86,36 @@ def doAdd(stack):
                 return stack.insert(0, str(newTop))
 
 
-def doSub(stack):
+def doSub(stack, map1):
         if len(stack) < 2:
                 return stack.insert(0, ':error:')
         elif stack[0][0] == ':' or stack[1][0] == ':':
                 return stack.insert(0, ':error:')
+        elif stack[0] in map1 and stack[1] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x-y
+                return stack.insert(0, str(newTop))
+        elif stack[0] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                y = int(stack[0])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x-y
+                return stack.insert(0, str(newTop))
+        elif stack[1] in map1:
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                x = int(stack[1])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x-y
+                return stack.insert(0, str(newTop))
         else:
                 x = int(stack[1])
                 y = int(stack[0])
@@ -74,11 +126,36 @@ def doSub(stack):
 
 
 
-def doMul(stack):
+def doMul(stack, map1):
         if len(stack) < 2:
                 return stack.insert(0, ':error:')
         elif stack[0][0] == ':' or stack[1][0] == ':':
                 return stack.insert(0, ':error:')
+        elif stack[0] in map1 and stack[1] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x*y
+                return stack.insert(0, str(newTop))
+        elif stack[0] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                y = int(stack[0])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x*y
+                return stack.insert(0, str(newTop))
+        elif stack[1] in map1:
+                yValue = map1[stack[1]]
+                y = int(yValue)
+                x = int(stack[0])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x*y
+                return stack.insert(0, str(newTop))
         else:
                 x = int(stack[1])
                 y = int(stack[0])
@@ -89,39 +166,89 @@ def doMul(stack):
 
 
 
-def doDiv(stack):
-	if len(stack) < 2:
-		return stack.insert(0, ':error:')
-	elif stack[0][0] == ':' or stack[1][0] == ':':
-		return stack.insert(0, ':error:')
-	else:
-		x = int(stack[1])
-		y = int(stack[0])
-		if y == 0:
-			return stack.insert(0, ':error:')
-		else:
-			stack.pop(0)
-			stack.pop(0)
-			newTop = x//y
-			return stack.insert(0, str(newTop))
+def doDiv(stack, map1):
+        if len(stack) < 2:
+                return stack.insert(0, ':error:')
+        elif stack[0][0] == ':' or stack[1][0] == ':':
+                return stack.insert(0, ':error:')
+        elif stack[0] in map1 and stack[1] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x//y
+                return stack.insert(0, str(newTop))
+        elif stack[0] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                y = int(stack[0])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x//y
+                return stack.insert(0, str(newTop))
+        elif stack[1] in map1:
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                x = int(stack[1])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x//y
+                return stack.insert(0, str(newTop))
+        else:
+                x = int(stack[1])
+                y = int(stack[0])
+                if y == 0:
+                        return stack.insert(0, ':error:')
+                else:
+                        stack.pop(0)
+                        stack.pop(0)
+                        newTop = x//y
+                        return stack.insert(0, str(newTop))
 
 
 
-def doRem(stack):
-	if len(stack) < 2:
-		return stack.insert(0, ':error:')
-	elif stack[0][0] == ':' or stack[1][0] == ':':
-		return stack.insert(0, ':error:')
-	else:
-		x = int(stack[1])
-		y = int(stack[0])
-		if y == 0:
-			return stack.insert(0, ':error:')
-		else:
-			stack.pop(0)
-			stack.pop(0)
-			newTop = x % y
-			return stack.insert(0, str(newTop))
+def doRem(stack, map1):
+        if len(stack) < 2:
+                return stack.insert(0, ':error:')
+        elif stack[0][0] == ':' or stack[1][0] == ':':
+                return stack.insert(0, ':error:')
+        elif stack[0] in map1 and stack[1] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x % y
+                return stack.insert(0, str(newTop))
+        elif stack[0] in map1:
+                xValue = map1[stack[1]]
+                x = int(xValue)
+                y = int(stack[0])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x % y
+                return stack.insert(0, str(newTop))
+        elif stack[1] in map1:
+                yValue = map1[stack[0]]
+                y = int(yValue)
+                x = int(stack[1])
+                stack.pop(0)
+                stack.pop(0)
+                newTop = x % y
+                return stack.insert(0, str(newTop))
+        else:
+                x = int(stack[1])
+                y = int(stack[0])
+                if y == 0:
+                        return stack.insert(0, ':error:')
+                else:
+                        stack.pop(0)
+                        stack.pop(0)
+                        newTop = x % y
+                        return stack.insert(0, str(newTop))
 
 
 def doPop(stack):
@@ -184,7 +311,7 @@ def doQuit(stack, f):
 def doAnd(stack):
         if len(stack) < 2:
                 return stack.insert(0, ':error:')
-        elif stack[1] == ":true:" or stack[1] == ":false:" and stack[0] == ":true:" or stack[0] == ":false:":
+        elif (stack[1] == ":true:" or stack[1] == ":false:") and (stack[0] == ":true:" or stack[0] == ":false:"):
                 x = stack[1]
                 y = stack[0]
                 stack.pop(0)
@@ -210,7 +337,7 @@ def doAnd(stack):
 def doOr(stack):
         if len(stack) < 2:
                 return stack.insert(0, ':error:')
-        elif stack[1] == ":true:" or stack[1] == ":false:" and stack[0] == ":true:" or stack[0] == ":false:":
+        elif (stack[1] == ":true:" or stack[1] == ":false:") and (stack[0] == ":true:" or stack[0] == ":false:"):
                 x = stack[1]
                 y = stack[0]
                 stack.pop(0)
@@ -288,9 +415,33 @@ def doLessThan(stack):
                 return stack.insert(0, ':error:')
 
 
-def doBind(stack):
-        
-
+def doBind(stack, map1):
+        if len(stack) < 1:
+                return stack.insert(0, ':error:')
+        else:
+                x = stack[1]
+                y = stack[0]
+                stack.pop(0)
+                stack.pop(0)
+                map1[x] = y
+                return stack.insert(0, ':unit:')
+                
+def doIf(stack):
+        if len(stack) < 3:
+                return stack.insert(0, ':error:')
+        elif stack[2] == ":true:" or stack[2] == ":false:":
+                z = stack[2]
+                y = stack[1]
+                x = stack[0]
+                stack.pop(0)
+                stack.pop(0)
+                stack.pop(0)
+                if z == ":true:":
+                        return stack.insert(0, x)
+                if z == ":false:":
+                        return stack.insert(0,y)
+        else:
+                return stack.insert(0, ':error:')
 
 def parseBooleanOrError(line, stack):
 	if line[1] == 'e':
@@ -301,7 +452,7 @@ def parseBooleanOrError(line, stack):
 		return stack.insert(0,':false:')
 
 
-hw3("input_2.txt","output_2.txt")
+hw3("input_9.txt","output_9.txt")
 
 
 

@@ -1,4 +1,0 @@
-:true:
-push 10
-sub
-quit

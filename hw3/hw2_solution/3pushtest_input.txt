@@ -1,4 +1,0 @@
-push a
-push 2.5
-push 02a
-quit

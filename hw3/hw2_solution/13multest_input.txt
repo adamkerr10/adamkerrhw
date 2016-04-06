@@ -1,7 +1,0 @@
-push 5
-mul
-push -5
-mul
-:false:
-mul
-quit
